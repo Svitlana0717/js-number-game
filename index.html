@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Вгадай число</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #f0f8ff;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Вгадай число від 1 до 100</h1>
+  <input type="number" id="guessInput" placeholder="Введи число" />
+  <br>
+  <button id="guessBtn">Перевірити</button>
+  <button id="restartBtn" style="display:none;">🔁 Почати знову</button>
+  
+  <div class="result" id="resultText"></div>
+  <p id="attempts">Спроб: 0</p>
+
+  <script>
+    let secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+
+    const guessInput = document.getElementById("guessInput");
+    const guessBtn = document.getElementById("guessBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const resultText = document.getElementById("resultText");
+    const attemptsText = document.getElementById("attempts");
+
+    guessBtn.addEventListener("click", () => {
+      const userGuess = Number(guessInput.value);
+      if (!userGuess || userGuess < 1 || userGuess > 100) {
+        resultText.textContent = "❗ Введи число від 1 до 100!";
+        return;
+      }
+
+      attempts++;
+      attemptsText.textContent = `Спроб: ${attempts}`;
+
+      if (userGuess === secretNumber) {
+        resultText.textContent = `✅ Правильно! Загадане число — ${secretNumber}`;
+        guessBtn.disabled = true;
+        restartBtn.style.display = "inline-block";
+      } else if (userGuess > secretNumber) {
+        resultText.textContent = "🔽 Забагато!";
+      } else {
+        resultText.textContent = "🔼 Замало!";
+      }
+
+      guessInput.value = "";
+      guessInput.focus();
+    });
+
+    restartBtn.addEventListener("click", () => {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      attemptsText.textContent = "Спроб: 0";
+      resultText.textContent = "";
+      guessBtn.disabled = false;
+      restartBtn.style.display = "none";
+    });
+  </script>
+</body>
+</html>
